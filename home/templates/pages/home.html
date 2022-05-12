@@ -1,0 +1,95 @@
+{% extends "pages/base.html" %}
+
+{% block title %}
+Dự báo thời tiết
+{% endblock %} 
+
+{% block content %}
+<div class="container-fluid row"> 
+  <div class="col-3"></div>
+  <h1 class="text-center col-6 float-start" >{{City.name}}</h1>
+    <div class="col-3 dropdown d-flex justify-content-center align-items-center">
+      <select class="form-select" id="selectCity" onchange="loadPage()">
+        <!-- <option value="1">One</option>
+        <option value="2">Two</option>
+        <option value="3">Three</option> -->
+        {% for city in allCityName %}
+          <option value="{{city.id}}" {% if city.id == idCurrent %} selected {% endif %}>{{city.name}}</option>
+        {% endfor %}
+        
+      </select>
+    </div>
+</div>
+<div class="container-fluid"style="background-image: linear-gradient( #E7EDF4, #ACD4FF); height: 100vh;">
+  <div class="container">
+      <div class="row p-3">
+        <div class="col-3 float-start bg-white p-3" style="border-radius:15px;">
+                  <h4 class="text-center">{{City.name}}</h4>
+                  <h5 class="text-center">
+                    <img src="{{City.icon}}" alt="icon">
+                  </h5>
+                  <h5 class="text-center">{{City.description}}</h5>
+                  <h4 class="text-center">{{City.temp}}°C</h4>
+        </div>
+        <div class="col-9"> 
+              <div class="row bg-white ms-1 p-3" style="border-radius:15px;">
+                <div class="col-6 float-start">
+                  <h4 class="p-2">
+                    <i class="bi bi-thermometer-half float-start"> Nhiệt độ thực tế</i>
+                    <i class="d-flex justify-content-end">{{City.feels_like}}°C</i>
+                  </h4>
+                  <h4 class="p-2" >
+                    <i class="bi bi-speedometer float-start"> Áp xuất không khí</i>
+                    <i class="d-flex justify-content-end">{{City.pressure}}hPa</i>
+                  </h4 class="p-2">
+                  <h4 class="p-2" >
+                    <i class="bi bi-droplet-fill float-start"> Độ ẩm</i>
+                    <i class="d-flex justify-content-end">{{City.humidity}}%</i>
+                  </h4 class="p-2">
+                  <h4 class="p-2" >
+                    <i class="bi bi-thermometer float-start"> Nhiệt độ khí quyển</i>
+                    <i class="d-flex justify-content-end">{{City.dew_point}}°C</i>
+                  </h4 class="p-2">
+                </div>
+                <div class="col-6">
+                  <h4 class="p-2">
+                    <i class="bi bi-brightness-high float-start"> Chỉ số UV</i>
+                    <i class="d-flex justify-content-end">{{City.uvi}}</i>
+                  </h4 class="p-2">
+                  <h4 class="p-2" >
+                    <i class="bi bi-cloud-fill float-start"> Mây</i>
+                    <i class="d-flex justify-content-end">{{City.clouds}}%</i>
+                  </h4 class="p-2">
+                  <h4 class="p-2" >
+                    <i class="float-start">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-wind" viewBox="0 0 16 16">
+                        <path d="M12.5 2A2.5 2.5 0 0 0 10 4.5a.5.5 0 0 1-1 0A3.5 3.5 0 1 1 12.5 8H.5a.5.5 0 0 1 0-1h12a2.5 2.5 0 0 0 0-5zm-7 1a1 1 0 0 0-1 1 .5.5 0 0 1-1 0 2 2 0 1 1 2 2h-5a.5.5 0 0 1 0-1h5a1 1 0 0 0 0-2zM0 9.5A.5.5 0 0 1 .5 9h10.042a3 3 0 1 1-3 3 .5.5 0 0 1 1 0 2 2 0 1 0 2-2H.5a.5.5 0 0 1-.5-.5z"/>
+                      </svg>
+                       Gió
+                    </i>
+                    <i class="d-flex justify-content-end">{{City.wind_speed}} m/s</i>
+                  </h4 class="p-2">
+                </div>
+              </div>
+        </div>
+      </div>
+  </div>
+  <div class="container">
+    <div class="row ps-2 pe-2">
+      {% for chart in charts%}
+      <div class="col-3 text-center p-2 rounded" >
+          {{ chart|safe }}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<script>
+  function loadPage() {
+    selectCity = document.getElementById('selectCity').value;
+    window.location = "/home?id=" + selectCity;
+  }
+</script>
+{% endblock %}
+
